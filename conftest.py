@@ -1,4 +1,4 @@
-from fixture.application import Application
+from modules.application import Application
 import pytest
 
 
