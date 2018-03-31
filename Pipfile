@@ -1,0 +1,27 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+attrs = "==17.4.0"
+certifi = "==2018.1.18"
+chardet = "==3.0.4"
+colorama = "==0.3.9"
+configparser = "==3.5.0"
+crayons = "==0.1.2"
+idna = "==2.6"
+more-itertools = "==4.1.0"
+pluggy = "==0.6.0"
+py = "==1.5.3"
+pytest = "==3.5.0"
+requests = "==2.18.4"
+selenium = "==3.11.0"
+six = "==1.11.0"
+"urllib3" = "==1.22"
+webdriver-manager = "==1.5.1"
+
+[dev-packages]
+
+[requires]
+python_version = "3.6"
