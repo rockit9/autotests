@@ -32,7 +32,7 @@ class SessionHelper:
     def log_with_fb(self, mail, password):
         driver = self.app.driver
         driver.find_element_by_css_selector("header > div > div.header-left > hamburger > div").click()
-        driver.find_element_by_css_selector("user-menu > div > ul > li:nth-child(5) > a").click()
+        driver.find_element_by_link_text("Sign In").click()
         time.sleep(2)
         driver.find_element_by_tag_name("facebook-native-button").click()
         time.sleep(2)
@@ -62,14 +62,13 @@ class SessionHelper:
 
     def reg_with_vk(self, mail, password):
         driver = self.app.driver
-        SessionHelper.check_current_loc(self)
-        driver.find_element_by_css_selector("a[href='/dashboard/create']").click()
+        driver.find_element_by_css_selector("a[ampsendevent='start_fundraiser']").click()
         # fb_button = WebDriverWait(driver, 10).until(
         #   EC.element_to_be_clickable((By.TAG_NAME, "facebook-native-button")))
         vk_button = driver.find_element_by_tag_name("social-vkontakte-button")
-        time.sleep(3)
+        time.sleep(2)
         vk_button.click()
-        time.sleep(3)
+        time.sleep(2)
         windows_list = driver.window_handles
         driver.switch_to.window(windows_list[1])
         driver.find_element_by_css_selector("input[name='email']").click()
@@ -82,10 +81,10 @@ class SessionHelper:
     def log_with_vk(self, mail, password):
         driver = self.app.driver
         driver.find_element_by_css_selector("header > div > div.header-left > hamburger > div").click()
-        driver.find_element_by_css_selector("user-menu > div > ul > li:nth-child(5) > a").click()
+        driver.find_element_by_link_text.click("Войти в систему")
         time.sleep(2)
         driver.find_element_by_tag_name("social-vkontakte-button").click()
-        time.sleep(3)
+        time.sleep(2)
         windows_list = driver.window_handles
         if len(windows_list) > 1:
             driver.switch_to.window(windows_list[1])
@@ -109,13 +108,14 @@ class SessionHelper:
 
     def check_is_reg_page_vk(self):
         driver = self.app.driver
-        url = driver.current_url()
-        assert url == "https://givehope.abz.agency/dashboard/create"
+        text = driver.find_element_by_css_selector(" form > div.start-company-form-contant > div.form-group > label")
+        assert text.text == "Название моей кампании"
 
     def check_is_logged_in_vk(self):
         driver = self.app.driver
-        url = driver.current_url()
-        assert url == "https://givehope.abz.agency/"
+        driver.find_element_by_css_selector("header > div > div.header-left > hamburger > div")
+        text = driver.find_element_by_link_text("Выход")
+        assert text.text == "Выход"
 
     def logout(self):
         driver = self.app.driver
@@ -128,7 +128,7 @@ class SessionHelper:
                 driver.find_element_by_link_text("Sign Out").click()
         else:
             try:
-                time.sleep(1)
+
                 driver.find_element_by_css_selector("div.header-right > div").click()
                 driver.find_element_by_link_text("Выход").click()
             except ElementNotVisibleException:
