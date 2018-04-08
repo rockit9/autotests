@@ -2,7 +2,7 @@
 
 
 import time
-from selenium.common.exceptions import ElementNotVisibleException
+from selenium.common.exceptions import ElementNotVisibleException, NoSuchElementException
 
 
 class SessionHelper:
@@ -48,12 +48,12 @@ class SessionHelper:
 
     def check_current_loc(self):
         driver = self.app.driver
-        loc = driver.find_element_by_css_selector("header > div > div.header-right > a")
-        if loc.text == "Start a FREE Fundraiser":
-            language = "en"
-        else:
-            language = "ru"
-        return language
+        try:
+            driver.find_element_by_link_text("Start a FREE Fundraiser")
+            loc = "en"
+        except NoSuchElementException:
+            loc = "ru"
+        return loc
 
     def switch_to_another_local(self, lang="en"):
         driver = self.app.driver
@@ -81,10 +81,10 @@ class SessionHelper:
     def log_with_vk(self, mail, password):
         driver = self.app.driver
         driver.find_element_by_css_selector("header > div > div.header-left > hamburger > div").click()
-        driver.find_element_by_link_text.click("Войти в систему")
+        driver.find_element_by_link_text("Войти в систему").click()
         time.sleep(2)
         driver.find_element_by_tag_name("social-vkontakte-button").click()
-        time.sleep(2)
+        time.sleep(3)
         windows_list = driver.window_handles
         if len(windows_list) > 1:
             driver.switch_to.window(windows_list[1])
@@ -113,24 +113,25 @@ class SessionHelper:
 
     def check_is_logged_in_vk(self):
         driver = self.app.driver
-        driver.find_element_by_css_selector("header > div > div.header-left > hamburger > div")
+        driver.find_element_by_css_selector("header > div > div.header-left > hamburger > div").click()
         text = driver.find_element_by_link_text("Выход")
         assert text.text == "Выход"
+        driver.find_element_by_css_selector("header > div > div.header-left > hamburger > div").click()
 
-    def logout(self):
+    def logout_fb(self):
         driver = self.app.driver
-        if SessionHelper.check_current_loc == "en":
-            try:
-                driver.find_element_by_css_selector("header > div > div.header-right > div > div").click()
-                driver.find_element_by_link_text("Sign Out").click()
-            except ElementNotVisibleException:
-                driver.find_element_by_css_selector("header > div > div.header-left > hamburger > div").click()
-                driver.find_element_by_link_text("Sign Out").click()
-        else:
-            try:
+        try:
+            driver.find_element_by_css_selector("header > div > div.header-right > div > div").click()
+            driver.find_element_by_link_text("Sign Out").click()
+        except ElementNotVisibleException:
+            driver.find_element_by_css_selector("header > div > div.header-left > hamburger > div").click()
+            driver.find_element_by_link_text("Sign Out").click()
 
-                driver.find_element_by_css_selector("div.header-right > div").click()
-                driver.find_element_by_link_text("Выход").click()
-            except ElementNotVisibleException:
-                driver.find_element_by_css_selector("header > div > div.header-left > hamburger > div").click()
-                driver.find_element_by_link_text("Выход").click()
+    def logout_vk(self):
+        driver = self.app.driver
+        try:
+            driver.find_element_by_css_selector("div.header-right > div").click()
+            driver.find_element_by_link_text("Выход").click()
+        except ElementNotVisibleException:
+            driver.find_element_by_css_selector("header > div > div.header-left > hamburger > div").click()
+            driver.find_element_by_link_text("Выход").click()
