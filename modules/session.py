@@ -99,7 +99,7 @@ class SessionHelper:
         driver = self.app.driver
         time.sleep(1)
         get_text = driver.find_element_by_css_selector("div.start-company-header__text")
-        assert get_text.text == "Hi Mahatma, enter your goal"
+        assert get_text.text == "Hi Pindamonhangaba, enter your goal"
 
     def check_is_logged_in_fb(self):
         driver = self.app.driver
